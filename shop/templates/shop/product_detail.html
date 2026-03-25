@@ -1,0 +1,111 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}{{ product.name }} - Hoàng Digital{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- Breadcrumb -->
+    <div class="col-12">
+        <nav aria-label="breadcrumb" class="bg-white p-2 rounded shadow-sm">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}" class="text-decoration-none text-muted">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'shop:product_list_by_category' product.category.slug %}" class="text-decoration-none text-muted">{{ product.category.name }}</a></li>
+                <li class="breadcrumb-item active fw-bold text-dark" aria-current="page">{{ product.name }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Product Main Info -->
+    <div class="col-md-5">
+        <div class="card product-card p-4 shadow-sm border-0 bg-white">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}" style="max-height: 400px; object-fit: contain;">
+            {% else %}
+                <div class="bg-light text-center py-5 rounded-3">
+                    <i class="bi bi-image fs-1 text-muted"></i>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="bg-white p-4 rounded-3 shadow-sm h-100 border-0">
+            <h1 class="h2 fw-bold mb-2">{{ product.name }}</h1>
+            <div class="d-flex align-items-center mb-3">
+                <div class="text-warning me-2">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                </div>
+                <span class="text-primary small">(128 đánh giá)</span>
+                <span class="mx-2 text-muted">|</span>
+                <span class="text-muted small">Mã: HD-{{ product.id|add:1000 }}</span>
+            </div>
+
+            <div class="bg-light p-3 rounded-3 mb-4 d-flex align-items-end">
+                <h2 class="text-danger fw-bold mb-0 me-3">{{ product.price }}₫</h2>
+                <span class="text-muted text-decoration-line-through fs-5">{{ product.price|add:2000000 }}₫</span>
+                <span class="badge bg-danger ms-3">-15%</span>
+            </div>
+
+            <div class="card border-warning mb-4" style="background-color: #fffdf5;">
+                <div class="card-header bg-warning text-dark fw-bold">
+                    <i class="bi bi-gift-fill me-2"></i>KHUYẾN MÃI ĐẶC BIỆT
+                </div>
+                <ul class="list-group list-group-flush bg-transparent">
+                    <li class="list-group-item bg-transparent border-warning-subtle small">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Tặng gói bảo hành VIP 12 tháng 1 đổi 1.
+                    </li>
+                    <li class="list-group-item bg-transparent border-warning-subtle small">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Giảm thêm 500.000đ khi thanh toán qua VNPay.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="d-grid gap-2">
+                <a href="{% url 'shop:cart_add' product.id %}" class="btn btn-buy btn-lg py-3">
+                    <span class="fw-bold d-block">MUA NGAY</span>
+                    <small class="d-block">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</small>
+                </a>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <button class="btn btn-outline-primary w-100 py-2 fw-bold">TRẢ GÓP 0%</button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-outline-primary w-100 py-2 fw-bold">TRẢ GÓP QUA THẺ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="col-md-8">
+        <div class="bg-white p-4 rounded-3 shadow-sm border-0 mb-4">
+            <h4 class="fw-bold mb-4 border-bottom pb-2">Đặc điểm nổi bật</h4>
+            <div class="product-description" style="line-height: 1.8;">
+                {{ product.description|linebreaks }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="bg-white p-4 rounded-3 shadow-sm border-0">
+            <h4 class="fw-bold mb-4 border-bottom pb-2">Thông số kỹ thuật</h4>
+            <table class="table table-striped table-hover small">
+                <tbody>
+                    {% for key, value in product.specifications.items %}
+                    <tr>
+                        <th scope="row" class="text-muted fw-normal" style="width: 40%;">{{ key }}</th>
+                        <td class="fw-bold">{{ value }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-muted text-center py-3">Đang cập nhật thông số...</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button class="btn btn-outline-secondary w-100 btn-sm mt-2">Xem cấu hình chi tiết</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
