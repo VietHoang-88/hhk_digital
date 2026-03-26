@@ -1,0 +1,39 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Đăng nhập - Hoàng Digital{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card product-card p-4 shadow-sm border-0">
+            <h2 class="fw-bold text-center mb-4">Đăng nhập tài khoản</h2>
+            
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    Tên đăng nhập hoặc mật khẩu không đúng. Vui lòng thử lại.
+                </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'shop:login' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_username" class="form-label fw-semibold">Tên đăng nhập</label>
+                    <input type="text" name="username" id="id_username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="id_password" class="form-label fw-semibold">Mật khẩu</label>
+                    <input type="password" name="password" id="id_password" class="form-control" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-buy py-2 fw-bold">Đăng nhập</button>
+                </div>
+            </form>
+            <div class="text-center mt-3">
+                <a href="#" class="text-decoration-none">Quên mật khẩu?</a>
+                <span class="mx-2 text-muted">|</span>
+                <a href="{% url 'shop:register' %}" class="text-decoration-none fw-bold text-danger">Tạo tài khoản mới</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

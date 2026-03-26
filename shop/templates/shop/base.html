@@ -56,7 +56,24 @@
                         {{ request.session.cart|length|default:0 }}
                     </span>
                 </a>
-                <a href="/admin" class="btn btn-light btn-sm fw-bold">Quản trị</a>
+                {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-4"></i> Xin chào, {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            {% if user.is_staff %}
+                                <li><a class="dropdown-item fw-bold text-primary" href="/admin"><i class="bi bi-shield-lock me-2"></i>Quản trị</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Tài khoản</a></li>
+                            <li><a class="dropdown-item" href="{% url 'shop:logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{% url 'shop:login' %}" class="btn btn-outline-light btn-sm fw-bold me-2">Đăng nhập</a>
+                    <a href="/admin" class="btn btn-light btn-sm fw-bold">Quản trị</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -70,11 +87,6 @@
             <h5 class="fw-bold mb-3">HHK<span class="text-warning">DIGITAL</span></h5>
             <p class="mb-1 text-muted">Hệ thống bán lẻ Điện thoại, Laptop, Phụ kiện & Đồ điện tử chính hãng</p>
             <p class="small text-muted mb-3">Đội ngũ sáng lập: <span class="fw-bold text-dark">Hưng - Hoàng - Khoa</span></p>
-            <div class="small text-muted mb-3">
-                <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i>Hẻm 20 Nguyễn Đình Chiểu, Phường Buôn Ma Thuột, Tỉnh Đắk Lắk</p>
-                <p class="mb-1"><i class="bi bi-telephone-fill me-2"></i>0989796959</p>
-                <p class="mb-0"><i class="bi bi-envelope-fill me-2"></i>hhk_digital@gmail.com</p>
-            </div>
             <hr class="w-25 mx-auto">
             <p class="mb-0 text-secondary">© 2026 HHKDigital.vn. Tất cả quyền được bảo lưu.</p>
         </div>

@@ -1,6 +1,7 @@
 {% extends 'shop/base.html' %}
+{% load humanize %}
 
-{% block title %}Giỏ hàng của bạn - HHK Digital{% endblock %}
+{% block title %}Giỏ hàng của bạn - Hoàng Digital{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -46,8 +47,8 @@
                                     <td class="text-center">
                                         <span class="badge bg-secondary px-3 py-2 fs-6">{{ item.quantity }}</span>
                                     </td>
-                                    <td class="text-end">{{ item.price }} VNĐ</td>
-                                    <td class="text-end pe-4 fw-bold text-danger">{{ item.total_price }} VNĐ</td>
+                                    <td class="text-end">{{ item.price|intcomma }}₫</td>
+                                    <td class="text-end pe-4 fw-bold text-danger">{{ item.total_price|intcomma }}₫</td>
                                     <td class="text-end pe-4">
                                         <a href="{% url 'shop:cart_remove' item.product.id %}" class="btn btn-outline-danger btn-sm">Xóa</a>
                                     </td>
@@ -57,7 +58,7 @@
                         <tfoot class="table-light">
                             <tr>
                                 <td colspan="3" class="text-end fw-bold fs-4 py-4">Tổng cộng:</td>
-                                <td class="text-end pe-4 fw-bold fs-4 py-4 text-danger">{{ total_price }} VNĐ</td>
+                                <td class="text-end pe-4 fw-bold fs-4 py-4 text-danger">{{ total_price|intcomma }}₫</td>
                                 <td></td>
                             </tr>
                         </tfoot>
@@ -69,7 +70,7 @@
                 <a href="{% url 'shop:product_list' %}" class="btn btn-outline-secondary">
                     Tiếp tục mua sắm
                 </a>
-                <a href="#" class="btn btn-success btn-lg px-5">
+                <a href="{% url 'shop:checkout' %}" class="btn btn-success btn-lg px-5">
                     Thanh toán ngay
                 </a>
             </div>

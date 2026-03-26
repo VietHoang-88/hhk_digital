@@ -1,0 +1,31 @@
+{% extends 'shop/base.html' %}
+{% load humanize %}
+
+{% block title %}Đặt hàng thành công - Hoàng Digital{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <div class="card product-card p-5 shadow-sm border-0 bg-white">
+            <div class="mb-4">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+            </div>
+            <h1 class="fw-bold text-success mb-3">ĐẶT HÀNG THÀNH CÔNG!</h1>
+            <p class="fs-5 mb-4">Cảm ơn bạn đã tin tưởng mua sắm tại <strong>Hoàng Digital</strong>. Mã đơn hàng của bạn là: <strong>HD-{{ order.id|add:1000 }}</strong></p>
+            
+            <div class="card bg-light p-4 mb-4 border-0 text-start">
+                <h5 class="fw-bold mb-3 border-bottom pb-2">Thông tin nhận hàng</h5>
+                <p class="mb-1"><strong>Người nhận:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+                <p class="mb-1"><strong>Điện thoại:</strong> {{ order.phone }}</p>
+                <p class="mb-1"><strong>Địa chỉ:</strong> {{ order.address }}, {{ order.city }}</p>
+                <p class="mb-1"><strong>Phương thức thanh toán:</strong> {{ order.get_payment_method_display }}</p>
+            </div>
+
+            <div class="d-grid gap-2 col-md-6 mx-auto">
+                <a href="{% url 'shop:product_list' %}" class="btn btn-buy btn-lg py-3 fw-bold">TIẾP TỤC MUA SẮM</a>
+                <a href="#" class="btn btn-outline-secondary">XEM CHI TIẾT ĐƠN HÀNG</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
