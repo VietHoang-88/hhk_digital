@@ -1,4 +1,4 @@
-from django.db import migrations, models
+from django.db import models
 from django.utils.text import slugify
 
 class Category(models.Model):
