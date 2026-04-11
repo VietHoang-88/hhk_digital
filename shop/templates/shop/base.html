@@ -18,7 +18,7 @@
         
         /* Header Top */
         .header-main { 
-            background: linear-gradient(to right, var(--cellphones-red), #ff8c00, var(--tgdd-yellow)); 
+            background: linear-gradient(to right, #0056b3, var(--cellphones-red), #ff8c00, var(--tgdd-yellow)); 
             padding: 10px 0; 
             border-bottom: 1px solid rgba(0,0,0,0.05); 
         }
@@ -45,7 +45,7 @@
 
         /* Sub Navigation */
         .header-nav { 
-            background: linear-gradient(to right, var(--cellphones-red), #ff8c00, var(--tgdd-yellow)); 
+            background: linear-gradient(to right, #0056b3, var(--cellphones-red), #ff8c00, var(--tgdd-yellow)); 
             padding-bottom: 8px; 
         }
         .nav-categories { display: flex; justify-content: space-between; list-style: none; margin: 0; padding: 0; overflow-x: auto; white-space: nowrap; }
@@ -100,7 +100,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                                 {% if user.is_staff %}
-                                    <li><a class="dropdown-item fw-bold text-primary" href="/admin"><i class="bi bi-shield-lock me-2"></i>Quản trị</a></li>
+                                    <li><a class="dropdown-item fw-bold text-primary" href="/admin" target="_blank"><i class="bi bi-shield-lock me-2"></i>Quản trị hệ thống</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                 {% endif %}
                                 <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Tài khoản</a></li>
@@ -108,6 +108,10 @@
                             </ul>
                         </div>
                     {% else %}
+                        <a href="/admin" class="header-action me-2" target="_blank">
+                            <i class="bi bi-shield-lock"></i>
+                            <span>Quản trị</span>
+                        </a>
                         <a href="{% url 'shop:login' %}" class="header-action me-2">
                             <i class="bi bi-person"></i>
                             <span>Đăng nhập</span>
