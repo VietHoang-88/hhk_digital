@@ -17,9 +17,13 @@
         body { background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         
         /* Header Top */
-        .header-main { background-color: var(--tgdd-yellow); padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .navbar-brand { font-weight: 900; font-size: 1.6rem; color: #000 !important; text-transform: uppercase; }
-        .navbar-brand span { color: #000; }
+        .header-main { 
+            background: linear-gradient(to right, var(--cellphones-red), #ff8c00, var(--tgdd-yellow)); 
+            padding: 10px 0; 
+            border-bottom: 1px solid rgba(0,0,0,0.05); 
+        }
+        .navbar-brand { font-weight: 900; font-size: 1.6rem; color: #fff !important; text-transform: uppercase; }
+        .navbar-brand span { color: #fff; }
         
         /* Search Bar */
         .search-wrapper { position: relative; width: 100%; max-width: 500px; }
@@ -34,16 +38,19 @@
         .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #666; z-index: 10; }
         
         /* Header Actions */
-        .header-action { color: #000 !important; font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; padding: 5px 10px; border-radius: 4px; transition: background 0.2s; }
+        .header-action { color: #fff !important; font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; padding: 5px 10px; border-radius: 4px; transition: background 0.2s; }
         .header-action:hover { background: rgba(255,255,255,0.2); }
         .header-action i { font-size: 1.2rem; margin-right: 6px; }
-        .cart-badge { background: #000; color: #fff; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; position: absolute; top: -2px; right: 2px; }
+        .cart-badge { background: #fff; color: var(--cellphones-red); border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; position: absolute; top: -2px; right: 2px; font-weight: bold; }
 
         /* Sub Navigation */
-        .header-nav { background-color: var(--tgdd-yellow); padding-bottom: 8px; }
+        .header-nav { 
+            background: linear-gradient(to right, var(--cellphones-red), #ff8c00, var(--tgdd-yellow)); 
+            padding-bottom: 8px; 
+        }
         .nav-categories { display: flex; justify-content: space-between; list-style: none; margin: 0; padding: 0; overflow-x: auto; white-space: nowrap; }
         .nav-categories::-webkit-scrollbar { display: none; }
-        .nav-item-link { color: #000 !important; text-decoration: none; font-size: 0.8rem; font-weight: 500; display: flex; align-items: center; padding: 8px 12px; border-radius: 4px; }
+        .nav-item-link { color: #fff !important; text-decoration: none; font-size: 0.8rem; font-weight: 500; display: flex; align-items: center; padding: 8px 12px; border-radius: 4px; }
         .nav-item-link:hover { background: rgba(255,255,255,0.3); }
         .nav-item-link i { font-size: 1rem; margin-right: 6px; }
 
@@ -85,11 +92,6 @@
 
                 <!-- Actions -->
                 <div class="col-auto d-flex align-items-center">
-                    <a href="#" class="header-action d-none d-lg-flex me-2">
-                        <i class="bi bi-geo-alt"></i>
-                        <span>Xem tồn kho tại<br><b>Hồ Chí Minh</b></span>
-                    </a>
-
                     {% if user.is_authenticated %}
                         <div class="dropdown me-2">
                             <a href="#" class="header-action dropdown-toggle" data-bs-toggle="dropdown">
