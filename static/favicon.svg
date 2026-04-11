@@ -3,11 +3,11 @@
   <rect width="100" height="100" rx="20" fill="#f5d142"/>
   
   <!-- Quai túi xách -->
-  <path d="M35 35 A 15 15 0 0 1 65 35" fill="none" stroke="black" stroke-width="5"/>
+  <path d="M35 30 A 15 15 0 0 1 65 30" fill="none" stroke="black" stroke-width="4"/>
   
   <!-- Thân túi xách -->
-  <path d="M25 35 h50 a 5 5 0 0 1 5 5 v35 a 10 10 0 0 1 -10 10 h-40 a 10 10 0 0 1 -10 -10 v-35 a 5 5 0 0 1 5 -5 z" fill="none" stroke="black" stroke-width="5"/>
+  <path d="M20 30 h60 a 5 5 0 0 1 5 5 v40 a 10 10 0 0 1 -10 10 h-50 a 10 10 0 0 1 -10 -10 v-40 a 5 5 0 0 1 5 -5 z" fill="none" stroke="black" stroke-width="4"/>
   
-  <!-- Chữ H nghệ thuật -->
-  <text x="50" y="72" font-family="'Brush Script MT', cursive, sans-serif" font-size="45" fill="black" text-anchor="middle" font-style="italic">H</text>
+  <!-- Chữ HHK nghệ thuật -->
+  <text x="50" y="65" font-family="'Brush Script MT', cursive, sans-serif" font-size="32" fill="black" text-anchor="middle" font-style="italic" font-weight="bold">HHK</text>
 </svg>

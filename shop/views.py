@@ -75,7 +75,12 @@ class ProductListView(ListView):
             self.category = get_object_or_404(Category, slug=category_slug)
             queryset = queryset.filter(category=self.category)
             
-        # Filter by price
+        # Tìm kiếm
+        search = self.request.GET.get('search')
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+            
+        # Lọc theo giá
         price_filter = self.request.GET.get('price')
         if price_filter == 'under_5m':
             queryset = queryset.filter(price__lt=5000000)
@@ -84,12 +89,23 @@ class ProductListView(ListView):
         elif price_filter == 'over_15m':
             queryset = queryset.filter(price__gt=15000000)
             
+        # Sắp xếp
+        sort = self.request.GET.get('sort')
+        if sort == 'price_asc':
+            queryset = queryset.order_by('price')
+        elif sort == 'price_desc':
+            queryset = queryset.order_by('-price')
+        else:
+            queryset = queryset.order_by('-created')
+            
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['current_price_filter'] = self.request.GET.get('price')
+        context['current_sort'] = self.request.GET.get('sort')
+        context['current_search'] = self.request.GET.get('search')
         category_slug = self.kwargs.get('category_slug')
         if category_slug:
             context['category'] = self.category

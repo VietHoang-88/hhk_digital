@@ -1,16 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120">
-  <!-- Nền vàng bo góc nhẹ -->
-  <rect width="100" height="120" rx="10" fill="#f5d142"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Nền vàng bo góc -->
+  <rect width="120" height="120" rx="15" fill="#f5d142"/>
   
   <!-- Quai túi xách -->
-  <path d="M35 30 A 15 15 0 0 1 65 30" fill="none" stroke="black" stroke-width="3"/>
+  <path d="M45 25 A 15 15 0 0 1 75 25" fill="none" stroke="black" stroke-width="4"/>
   
   <!-- Thân túi xách -->
-  <path d="M25 30 h50 a 5 5 0 0 1 5 5 v40 a 10 10 0 0 1 -10 10 h-40 a 10 10 0 0 1 -10 -10 v-40 a 5 5 0 0 1 5 -5 z" fill="none" stroke="black" stroke-width="3"/>
+  <path d="M30 25 h60 a 5 5 0 0 1 5 5 v50 a 10 10 0 0 1 -10 10 h-50 a 10 10 0 0 1 -10 -10 v-50 a 5 5 0 0 1 5 -5 z" fill="none" stroke="black" stroke-width="4"/>
   
-  <!-- Chữ H nghệ thuật bên trong túi -->
-  <text x="50" y="68" font-family="'Brush Script MT', cursive, sans-serif" font-size="40" fill="black" text-anchor="middle" font-style="italic">H</text>
+  <!-- Chữ HHK nghệ thuật bên trong túi -->
+  <text x="60" y="68" font-family="'Brush Script MT', cursive, sans-serif" font-size="36" fill="black" text-anchor="middle" font-style="italic" font-weight="bold">HHK</text>
   
-  <!-- Chữ HHK phía dưới -->
-  <text x="50" y="108" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="black" text-anchor="middle" letter-spacing="1">HHK</text>
+  <!-- Chữ DIGITAL phía dưới -->
+  <text x="60" y="105" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="black" text-anchor="middle" letter-spacing="2">DIGITAL</text>
 </svg>

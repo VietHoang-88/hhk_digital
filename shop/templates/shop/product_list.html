@@ -13,11 +13,11 @@
             <div class="mb-4">
                 <label class="form-label small fw-bold text-muted">DANH MỤC</label>
                 <div class="list-group list-group-flush small">
-                    <a href="{% url 'shop:product_list' %}" class="list-group-item list-group-item-action border-0 px-0 {% if not category %}text-primary fw-bold{% endif %}">
+                    <a href="{% url 'shop:product_list' %}{% if current_price_filter or current_sort or current_search %}?{% if current_price_filter %}price={{ current_price_filter }}{% endif %}{% if current_sort %}{% if current_price_filter %}&{% endif %}sort={{ current_sort }}{% endif %}{% if current_search %}{% if current_price_filter or current_sort %}&{% endif %}search={{ current_search }}{% endif %}{% endif %}" class="list-group-item list-group-item-action border-0 px-0 {% if not category %}text-primary fw-bold{% endif %}">
                         Tất cả sản phẩm
                     </a>
                     {% for c in categories %}
-                        <a href="{% url 'shop:product_list_by_category' c.slug %}" 
+                        <a href="{% url 'shop:product_list_by_category' c.slug %}{% if current_price_filter or current_sort or current_search %}?{% if current_price_filter %}price={{ current_price_filter }}{% endif %}{% if current_sort %}{% if current_price_filter %}&{% endif %}sort={{ current_sort }}{% endif %}{% if current_search %}{% if current_price_filter or current_sort %}&{% endif %}search={{ current_search }}{% endif %}{% endif %}" 
                            class="list-group-item list-group-item-action border-0 px-0 {% if category.slug == c.slug %}text-primary fw-bold{% endif %}">
                             {{ c.name }}
                         </a>
@@ -28,15 +28,15 @@
             <div class="mb-3">
                 <label class="form-label small fw-bold text-muted">MỨC GIÁ</label>
                 <div class="list-group list-group-flush small">
-                    <a href="?price=under_5m" 
+                    <a href="{% if current_price_filter == 'under_5m' %}?{% if current_sort %}sort={{ current_sort }}{% endif %}{% if current_search %}{% if current_sort %}&{% endif %}search={{ current_search }}{% endif %}{% else %}?price=under_5m{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% endif %}" 
                        class="list-group-item list-group-item-action border-0 px-0 {% if current_price_filter == 'under_5m' %}text-danger fw-bold{% endif %}">
                         <i class="bi {% if current_price_filter == 'under_5m' %}bi-check-circle-fill{% else %}bi-circle{% endif %} me-2"></i>Dưới 5 triệu
                     </a>
-                    <a href="?price=5m_15m" 
+                    <a href="{% if current_price_filter == '5m_15m' %}?{% if current_sort %}sort={{ current_sort }}{% endif %}{% if current_search %}{% if current_sort %}&{% endif %}search={{ current_search }}{% endif %}{% else %}?price=5m_15m{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% endif %}" 
                        class="list-group-item list-group-item-action border-0 px-0 {% if current_price_filter == '5m_15m' %}text-danger fw-bold{% endif %}">
                         <i class="bi {% if current_price_filter == '5m_15m' %}bi-check-circle-fill{% else %}bi-circle{% endif %} me-2"></i>5 - 15 triệu
                     </a>
-                    <a href="?price=over_15m" 
+                    <a href="{% if current_price_filter == 'over_15m' %}?{% if current_sort %}sort={{ current_sort }}{% endif %}{% if current_search %}{% if current_sort %}&{% endif %}search={{ current_search }}{% endif %}{% else %}?price=over_15m{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}{% endif %}" 
                        class="list-group-item list-group-item-action border-0 px-0 {% if current_price_filter == 'over_15m' %}text-danger fw-bold{% endif %}">
                         <i class="bi {% if current_price_filter == 'over_15m' %}bi-check-circle-fill{% else %}bi-circle{% endif %} me-2"></i>Trên 15 triệu
                     </a>
@@ -44,7 +44,7 @@
             </div>
             
             {% if current_price_filter %}
-            <a href="." class="btn btn-sm btn-light w-100 mt-2">
+            <a href="{{ request.path }}{% if current_sort or current_search %}?{% if current_sort %}sort={{ current_sort }}{% endif %}{% if current_sort and current_search %}&{% endif %}{% if current_search %}search={{ current_search }}{% endif %}{% endif %}" class="btn btn-sm btn-light w-100 mt-2">
                 <i class="bi bi-x-circle me-2"></i>Xóa bộ lọc
             </a>
             {% endif %}
@@ -63,11 +63,19 @@
             </h5>
             <div class="d-flex align-items-center">
                 <span class="small text-muted me-2 d-none d-md-block">Sắp xếp:</span>
-                <select class="form-select form-select-sm w-auto border-0 bg-light fw-semibold">
-                    <option>Mới nhất</option>
-                    <option>Giá: Thấp đến Cao</option>
-                    <option>Giá: Cao đến Thấp</option>
-                </select>
+                <form method="get" class="d-flex align-items-center">
+                    {% if current_price_filter %}
+                        <input type="hidden" name="price" value="{{ current_price_filter }}">
+                    {% endif %}
+                    {% if current_search %}
+                        <input type="hidden" name="search" value="{{ current_search }}">
+                    {% endif %}
+                    <select name="sort" class="form-select form-select-sm w-auto border-0 bg-light fw-semibold" onchange="this.form.submit()">
+                        <option value="" {% if not current_sort %}selected{% endif %}>Mới nhất</option>
+                        <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Giá: Thấp đến Cao</option>
+                        <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Giá: Cao đến Thấp</option>
+                    </select>
+                </form>
             </div>
         </div>
 
@@ -126,6 +134,35 @@
                 </div>
             {% endfor %}
         </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav class="mt-5">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_price_filter %}&price={{ current_price_filter }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}{% if current_price_filter %}&price={{ current_price_filter }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}">{{ num }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_price_filter %}&price={{ current_price_filter }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_search %}&search={{ current_search }}{% endif %}">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

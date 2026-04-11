@@ -92,10 +92,10 @@
 
                 <!-- Search -->
                 <div class="col">
-                    <div class="search-wrapper mx-auto">
+                    <form action="{% url 'shop:product_list' %}" method="get" class="search-wrapper mx-auto">
                         <i class="bi bi-search search-icon"></i>
-                        <input class="form-control search-bar" type="search" placeholder="Bạn tìm gì giúp Hưng, Hoàng, Khoa hôm nay..." aria-label="Search">
-                    </div>
+                        <input name="search" class="form-control search-bar" type="search" placeholder="Bạn tìm gì giúp Hưng, Hoàng, Khoa hôm nay..." aria-label="Search" value="{{ request.GET.search }}">
+                    </form>
                 </div>
 
                 <!-- Actions -->
