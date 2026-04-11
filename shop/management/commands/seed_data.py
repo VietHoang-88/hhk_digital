@@ -73,14 +73,14 @@ class Command(BaseCommand):
                     'price': 3990000, 
                     'stock': 100, 
                     'description': 'Loa di động kháng nước, âm thanh 360 độ.',
-                    'image_url': 'https://marshall.com.vn/wp-content/uploads/2022/05/marshall-emberton-2-black-and-brass-01.jpg'
+                    'image_url': 'https://th.bing.com/th/id/OIP.JgjWTI8snGZTJzM_OcdijwHaD2?w=279&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3'
                 },
                 {
                     'name': 'JBL Charge 5', 
                     'price': 3290000, 
                     'stock': 80, 
                     'description': 'Âm thanh JBL Pro Sound, pin lên đến 20 giờ.',
-                    'image_url': 'https://vn.jbl.com/dw/image/v2/AA9Z_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwb528652c/JBL_CHARGE5_HERO_GREY_15473_x2.png?sw=537&sfrm=png'
+                    'image_url': 'https://tse4.mm.bing.net/th/id/OIP.vrmRdOsqt3SWt9E_uV46IQHaEl?rs=1&pid=ImgDetMain&o=7&rm=3'
                 },
             ],
             'Phụ Kiện': [
