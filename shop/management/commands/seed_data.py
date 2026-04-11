@@ -14,6 +14,8 @@ class Command(BaseCommand):
             'Máy tính bảng',
             'Laptop',
             'Loa',
+            'Phụ Kiện',
+            'TV Smart',
         ]
 
         products_data = {
@@ -79,6 +81,38 @@ class Command(BaseCommand):
                     'stock': 80, 
                     'description': 'Âm thanh JBL Pro Sound, pin lên đến 20 giờ.',
                     'image_url': 'https://vn.jbl.com/dw/image/v2/AA9Z_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwb528652c/JBL_CHARGE5_HERO_GREY_15473_x2.png?sw=537&sfrm=png'
+                },
+            ],
+            'Phụ Kiện': [
+                {
+                    'name': 'Apple Watch Series 9 GPS 41mm', 
+                    'price': 9490000, 
+                    'stock': 60, 
+                    'description': 'Theo dõi sức khỏe, màn hình Always-On siêu sáng.',
+                    'image_url': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MT9G3_VW_34FR+watch-45-alum-midnight-nc-s9_VW_34FR_WF_CO?wid=750&hei=712&trim=1,0&fmt=p-jpg&qlt=95&.v=1694507905569'
+                },
+                {
+                    'name': 'AirPods Pro (2nd generation) MagSafe', 
+                    'price': 5790000, 
+                    'stock': 120, 
+                    'description': 'Chống ồn chủ động, âm thanh không gian cá nhân hóa.',
+                    'image_url': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1694014871985'
+                },
+            ],
+            'TV Smart': [
+                {
+                    'name': 'Samsung Crystal UHD 4K 55 inch UA55AU7700', 
+                    'price': 12990000, 
+                    'stock': 15, 
+                    'description': 'Màu sắc sống động, độ phân giải 4K sắc nét.',
+                    'image_url': 'https://images.samsung.com/is/image/samsung/p6pim/vn/ua55au7700kxxv/gallery/vn-uhd-au7000-ua55au7700kxxv-thumb-427210134'
+                },
+                {
+                    'name': 'Sony BRAVIA XR OLED 65 inch XR-65A80L', 
+                    'price': 45990000, 
+                    'stock': 10, 
+                    'description': 'Màn hình OLED hoàn hảo, âm thanh phát ra từ màn hình.',
+                    'image_url': 'https://www.sony.com.vn/image/61001469e38f9725f4a7f0e633276632?fmt=pjpeg&wid=330&bgcolor=FFFFFF&bgc=FFFFFF'
                 },
             ],
         }
