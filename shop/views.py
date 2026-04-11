@@ -108,7 +108,11 @@ def cart_add(request, product_id):
     # Giả sử mặc định cộng thêm 1
     cart[product_id]['quantity'] += 1
     request.session['cart'] = cart
-    return redirect('shop:product_list')
+    
+    # Nếu là mua ngay thì chuyển hướng đến checkout, ngược lại về giỏ hàng
+    if request.GET.get('buy_now'):
+        return redirect('shop:checkout')
+    return redirect('shop:cart_detail')
 
 def cart_detail(request):
     cart = request.session.get('cart', {})

@@ -61,17 +61,28 @@
                 </ul>
             </div>
 
-            <div class="d-grid gap-2">
-                <a href="{% url 'shop:cart_add' product.id %}" class="btn btn-buy btn-lg py-3">
-                    <span class="fw-bold d-block">MUA NGAY</span>
-                    <small class="d-block">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</small>
-                </a>
+            <div class="d-grid gap-3">
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <a href="{% url 'shop:cart_add' product.id %}" class="btn btn-outline-primary btn-lg w-100 py-3">
+                            <i class="bi bi-cart-plus fs-4 d-block mb-1"></i>
+                            <span class="fw-bold">Thêm vào giỏ hàng</span>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'shop:cart_add' product.id %}?buy_now=1" class="btn btn-danger btn-lg w-100 py-3">
+                            <i class="bi bi-lightning-fill fs-4 d-block mb-1"></i>
+                            <span class="fw-bold">MUA NGAY</span>
+                        </a>
+                    </div>
+                </div>
+                
                 <div class="row g-2">
                     <div class="col-6">
-                        <button class="btn btn-outline-primary w-100 py-2 fw-bold">TRẢ GÓP 0%</button>
+                        <button class="btn btn-outline-warning w-100 py-2 fw-bold text-dark">TRẢ GÓP 0%</button>
                     </div>
                     <div class="col-6">
-                        <button class="btn btn-outline-primary w-100 py-2 fw-bold">TRẢ GÓP QUA THẺ</button>
+                        <button class="btn btn-outline-warning w-100 py-2 fw-bold text-dark">TRẢ GÓP QUA THẺ</button>
                     </div>
                 </div>
             </div>
