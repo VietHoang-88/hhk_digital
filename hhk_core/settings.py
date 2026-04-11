@@ -76,9 +76,10 @@ DATABASES = {
     }
 }
 
-# Chỉ sử dụng DATABASE_URL nếu nó thực sự có giá trị
-if os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# Chỉ sử dụng DATABASE_URL nếu nó thực sự có giá trị và không trống
+db_from_env = os.environ.get('DATABASE_URL', '').strip()
+if db_from_env:
+    DATABASES['default'] = dj_database_url.config(default=db_from_env, conn_max_age=600)
 
 
 # Password validation
