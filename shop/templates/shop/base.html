@@ -126,12 +126,20 @@
     <nav class="header-nav">
         <div class="container">
             <ul class="nav-categories">
-                <li><a href="{% url 'shop:product_list_by_category' 'dien-thoai-di-dong' %}" class="nav-item-link"><i class="bi bi-phone"></i>Điện thoại</a></li>
-                <li><a href="{% url 'shop:product_list_by_category' 'laptop' %}" class="nav-item-link"><i class="bi bi-laptop"></i>Laptop</a></li>
-                <li><a href="{% url 'shop:product_list_by_category' 'may-tinh-bang' %}" class="nav-item-link"><i class="bi bi-tablet"></i>Tablet</a></li>
-                <li><a href="{% url 'shop:product_list_by_category' 'phu-kien' %}" class="nav-item-link"><i class="bi bi-headset"></i>Phụ kiện</a></li>
-                <li><a href="{% url 'shop:product_list_by_category' 'loa' %}" class="nav-item-link"><i class="bi bi-speaker"></i>Loa</a></li>
-                <li><a href="{% url 'shop:product_list_by_category' 'tv-smart' %}" class="nav-item-link"><i class="bi bi-tv"></i>TV Smart</a></li>
+                {% for c in all_categories %}
+                <li>
+                    <a href="{% url 'shop:product_list_by_category' c.slug %}" class="nav-item-link">
+                        {% if 'dien-thoai' in c.slug %}<i class="bi bi-phone"></i>
+                        {% elif 'laptop' in c.slug %}<i class="bi bi-laptop"></i>
+                        {% elif 'tablet' in c.slug or 'may-tinh-bang' in c.slug %}<i class="bi bi-tablet"></i>
+                        {% elif 'phu-kien' in c.slug %}<i class="bi bi-headset"></i>
+                        {% elif 'loa' in c.slug %}<i class="bi bi-speaker"></i>
+                        {% elif 'tv' in c.slug %}<i class="bi bi-tv"></i>
+                        {% else %}<i class="bi bi-tag"></i>{% endif %}
+                        {{ c.name }}
+                    </a>
+                </li>
+                {% endfor %}
             </ul>
         </div>
     </nav>
