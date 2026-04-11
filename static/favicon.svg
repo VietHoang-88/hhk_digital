@@ -1,7 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100">
-  <text x="5" y="75" font-family="Arial, sans-serif" font-size="60" font-weight="900" letter-spacing="2">
-    <tspan fill="#00dbff">H</tspan>
-    <tspan fill="#ff0000" dx="2">H</tspan>
-    <tspan fill="#ffb800" dx="2">K</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Nền vàng bo góc -->
+  <rect width="100" height="100" rx="20" fill="#f5d142"/>
+  
+  <!-- Quai túi xách -->
+  <path d="M35 35 A 15 15 0 0 1 65 35" fill="none" stroke="black" stroke-width="5"/>
+  
+  <!-- Thân túi xách -->
+  <path d="M25 35 h50 a 5 5 0 0 1 5 5 v35 a 10 10 0 0 1 -10 10 h-40 a 10 10 0 0 1 -10 -10 v-35 a 5 5 0 0 1 5 -5 z" fill="none" stroke="black" stroke-width="5"/>
+  
+  <!-- Chữ H nghệ thuật -->
+  <text x="50" y="72" font-family="'Brush Script MT', cursive, sans-serif" font-size="45" fill="black" text-anchor="middle" font-style="italic">H</text>
 </svg>

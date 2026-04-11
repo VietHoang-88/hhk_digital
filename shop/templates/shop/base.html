@@ -24,8 +24,11 @@
             padding: 10px 0; 
             border-bottom: 1px solid rgba(0,0,0,0.05); 
         }
-        .navbar-brand { display: flex; align-items: center; padding: 0; }
-        .logo-img { height: 45px; width: auto; object-fit: contain; }
+        .navbar-brand { font-weight: 900; font-size: 2.2rem; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 2px; }
+        .logo-h1 { color: #00dbff; text-shadow: 1px 1px 0px rgba(0,0,0,0.2); margin-right: 1px; } /* Xanh Cyan sáng */
+        .logo-h2 { color: #ff0000; text-shadow: 1px 1px 0px rgba(0,0,0,0.2); margin-right: 1px; } /* Đỏ tươi */
+        .logo-k { color: #ffb800; text-shadow: 1px 1px 0px rgba(0,0,0,0.2); }  /* Vàng đậm */
+        .logo-text { color: #fff; font-size: 1.1rem; margin-left: 8px; font-weight: 700; text-transform: none; letter-spacing: 0px; align-self: flex-end; margin-bottom: 5px; }
         
         /* Search Bar */
         .search-wrapper { position: relative; width: 100%; max-width: 500px; }
@@ -80,7 +83,10 @@
                 <!-- Logo -->
                 <div class="col-auto">
                     <a class="navbar-brand" href="{% url 'shop:product_list' %}">
-                        <img src="{% static 'logo_hhk.svg' %}" alt="HHK Digital" class="logo-img">
+                        <span class="logo-h1">H</span>
+                        <span class="logo-h2">H</span>
+                        <span class="logo-k">K</span>
+                        <span class="logo-text">Digital</span>
                     </a>
                 </div>
 
