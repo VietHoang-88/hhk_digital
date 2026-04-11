@@ -70,16 +70,12 @@ WSGI_APPLICATION = 'hhk_core.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        conn_max_age=600,
+        conn_health_checks=True,
+        default='sqlite:///db.sqlite3'
+    )
 }
-
-# Chỉ sử dụng DATABASE_URL nếu nó thực sự có giá trị và không trống
-db_from_env = os.environ.get('DATABASE_URL', '').strip()
-if db_from_env:
-    DATABASES['default'] = dj_database_url.config(default=db_from_env, conn_max_age=600)
 
 
 # Password validation
