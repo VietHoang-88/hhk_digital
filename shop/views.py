@@ -2,9 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from .models import Category, Product, Order, OrderItem
 from .forms import OrderCreateForm
 
+@login_required
 def order_create(request):
     cart = request.session.get('cart', {})
     if not cart:
@@ -102,11 +104,25 @@ class ProductDetailView(DetailView):
 def cart_add(request, product_id):
     cart = request.session.get('cart', {})
     product_id = str(product_id)
+    
+    # Lấy số lượng từ request, mặc định là 1
+    try:
+        quantity = int(request.GET.get('quantity', 1))
+        if quantity < 1:
+            quantity = 1
+    except (ValueError, TypeError):
+        quantity = 1
+
     if product_id not in cart:
         cart[product_id] = {'quantity': 0, 'price': str(Product.objects.get(id=product_id).price)}
     
-    # Giả sử mặc định cộng thêm 1
-    cart[product_id]['quantity'] += 1
+    # Nếu là cập nhật số lượng trực tiếp (từ trang giỏ hàng)
+    if request.GET.get('update'):
+        cart[product_id]['quantity'] = quantity
+    else:
+        # Nếu là thêm vào giỏ (từ trang chi tiết)
+        cart[product_id]['quantity'] += quantity
+        
     request.session['cart'] = cart
     
     # Nếu là mua ngay thì chuyển hướng đến checkout, ngược lại về giỏ hàng

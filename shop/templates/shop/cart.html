@@ -45,7 +45,19 @@
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <span class="badge bg-secondary px-3 py-2 fs-6">{{ item.quantity }}</span>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div class="input-group input-group-sm" style="width: 110px;">
+                                                <a href="{% url 'shop:cart_add' item.product.id %}?quantity={{ item.quantity|add:'-1' }}&update=1" 
+                                                   class="btn btn-outline-secondary {% if item.quantity <= 1 %}disabled{% endif %}">
+                                                    <i class="bi bi-dash"></i>
+                                                </a>
+                                                <input type="text" class="form-control text-center fw-bold" value="{{ item.quantity }}" readonly>
+                                                <a href="{% url 'shop:cart_add' item.product.id %}?quantity={{ item.quantity|add:'1' }}&update=1" 
+                                                   class="btn btn-outline-secondary">
+                                                    <i class="bi bi-plus"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td class="text-end">{{ item.price|intcomma }}₫</td>
                                     <td class="text-end pe-4 fw-bold text-danger">{{ item.total_price|intcomma }}₫</td>

@@ -61,16 +61,33 @@
                 </ul>
             </div>
 
+            <!-- Bộ chọn số lượng -->
+            <div class="mb-4">
+                <label class="form-label fw-bold small mb-2">Số lượng:</label>
+                <div class="d-flex align-items-center">
+                    <div class="input-group" style="width: 140px;">
+                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(-1)">
+                            <i class="bi bi-dash"></i>
+                        </button>
+                        <input type="number" id="quantity" class="form-control text-center fw-bold" value="1" min="1" readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(1)">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+                    <span class="ms-3 text-muted small">Còn lại: {{ product.stock }} sản phẩm</span>
+                </div>
+            </div>
+
             <div class="d-grid gap-3">
                 <div class="row g-2">
                     <div class="col-md-6">
-                        <a href="{% url 'shop:cart_add' product.id %}" class="btn btn-outline-primary btn-lg w-100 py-3">
+                        <a href="javascript:void(0)" onclick="addToCart('{% url 'shop:cart_add' product.id %}')" class="btn btn-outline-primary btn-lg w-100 py-3">
                             <i class="bi bi-cart-plus fs-4 d-block mb-1"></i>
                             <span class="fw-bold">Thêm vào giỏ hàng</span>
                         </a>
                     </div>
                     <div class="col-md-6">
-                        <a href="{% url 'shop:cart_add' product.id %}?buy_now=1" class="btn btn-danger btn-lg w-100 py-3">
+                        <a href="javascript:void(0)" onclick="addToCart('{% url 'shop:cart_add' product.id %}', true)" class="btn btn-danger btn-lg w-100 py-3">
                             <i class="bi bi-lightning-fill fs-4 d-block mb-1"></i>
                             <span class="fw-bold">MUA NGAY</span>
                         </a>
@@ -86,6 +103,24 @@
                     </div>
                 </div>
             </div>
+
+            <script>
+                function changeQty(delta) {
+                    const input = document.getElementById('quantity');
+                    let val = parseInt(input.value) + delta;
+                    if (val < 1) val = 1;
+                    input.value = val;
+                }
+
+                function addToCart(baseUrl, buyNow = false) {
+                    const qty = document.getElementById('quantity').value;
+                    let url = baseUrl + '?quantity=' + qty;
+                    if (buyNow) {
+                        url += '&buy_now=1';
+                    }
+                    window.location.href = url;
+                }
+            </script>
         </div>
     </div>
 
