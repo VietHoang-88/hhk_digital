@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80">
+  <!-- Nền trong suốt -->
+  <rect width="300" height="80" fill="none"/>
+  
+  <!-- Chữ H thứ nhất (Xanh Cyan) -->
+  <path d="M20 15h18v20h24v-20h18v50h-18v-20h-24v20h-18z" fill="#00dbff"/>
+  
+  <!-- Chữ H thứ hai (Đỏ) -->
+  <path d="M105 15h18v20h24v-20h18v50h-18v-20h-24v20h-18z" fill="#ff0000"/>
+  
+  <!-- Chữ K (Vàng) -->
+  <path d="M190 15h18v20l22-20h22l-25 22 28 28h-22l-18-20v20h-18z" fill="#ffb800"/>
+  
+  <!-- Chữ Digital (Trắng) -->
+  <text x="275" y="60" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#ffffff" text-anchor="end">Digital</text>
+</svg>
