@@ -22,8 +22,11 @@
             padding: 10px 0; 
             border-bottom: 1px solid rgba(0,0,0,0.05); 
         }
-        .navbar-brand { font-weight: 900; font-size: 1.6rem; color: #fff !important; text-transform: uppercase; }
-        .navbar-brand span { color: #fff; }
+        .navbar-brand { font-weight: 900; font-size: 1.8rem; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; }
+        .logo-h1 { color: #00bfff; } /* Xanh dương sáng */
+        .logo-h2 { color: #ff0000; } /* Đỏ */
+        .logo-k { color: #ffbc05; }  /* Vàng */
+        .logo-text { color: #fff; font-size: 1rem; margin-left: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         
         /* Search Bar */
         .search-wrapper { position: relative; width: 100%; max-width: 500px; }
@@ -77,8 +80,11 @@
             <div class="row align-items-center g-3">
                 <!-- Logo -->
                 <div class="col-auto">
-                    <a class="navbar-brand d-flex align-items-center" href="{% url 'shop:product_list' %}">
-                        HHK DIGITAL
+                    <a class="navbar-brand" href="{% url 'shop:product_list' %}">
+                        <span class="logo-h1">H</span>
+                        <span class="logo-h2">H</span>
+                        <span class="logo-k">K</span>
+                        <span class="logo-text">Digital</span>
                     </a>
                 </div>
 
