@@ -18,7 +18,7 @@
         
         /* Header Top */
         .header-main { background-color: var(--tgdd-yellow); padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .navbar-brand { font-weight: 900; font-size: 1.6rem; color: #000 !important; text-transform: lowercase; }
+        .navbar-brand { font-weight: 900; font-size: 1.6rem; color: #000 !important; text-transform: uppercase; }
         .navbar-brand span { color: #000; }
         
         /* Search Bar */
@@ -71,7 +71,7 @@
                 <!-- Logo -->
                 <div class="col-auto">
                     <a class="navbar-brand d-flex align-items-center" href="{% url 'shop:product_list' %}">
-                        hhkdigital<span style="font-weight: 300; font-size: 0.7rem; margin-left: 2px;">.com</span>
+                        HHK DIGITAL
                     </a>
                 </div>
 
@@ -130,12 +130,8 @@
                 <li><a href="{% url 'shop:product_list_by_category' 'laptop' %}" class="nav-item-link"><i class="bi bi-laptop"></i>Laptop</a></li>
                 <li><a href="{% url 'shop:product_list_by_category' 'may-tinh-bang' %}" class="nav-item-link"><i class="bi bi-tablet"></i>Tablet</a></li>
                 <li><a href="{% url 'shop:product_list_by_category' 'phu-kien' %}" class="nav-item-link"><i class="bi bi-headset"></i>Phụ kiện</a></li>
-                <li><a href="#" class="nav-item-link"><i class="bi bi-watch"></i>Smartwatch</a></li>
-                <li><a href="#" class="nav-item-link"><i class="bi bi-clock"></i>Đồng hồ</a></li>
-                <li><a href="#" class="nav-item-link"><i class="bi bi-arrow-repeat"></i>Máy cũ, Thu cũ</a></li>
-                <li><a href="{% url 'shop:product_list_by_category' 'tv-smart' %}" class="nav-item-link"><i class="bi bi-tv"></i>TV</a></li>
-                <li><a href="#" class="nav-item-link"><i class="bi bi-sim"></i>Sim, Thẻ cào</a></li>
-                <li><a href="#" class="nav-item-link"><i class="bi bi-lightning-charge"></i>Dịch vụ tiện ích</a></li>
+                <li><a href="{% url 'shop:product_list_by_category' 'loa' %}" class="nav-item-link"><i class="bi bi-speaker"></i>Loa</a></li>
+                <li><a href="{% url 'shop:product_list_by_category' 'tv-smart' %}" class="nav-item-link"><i class="bi bi-tv"></i>TV Smart</a></li>
             </ul>
         </div>
     </nav>
