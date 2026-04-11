@@ -9,18 +9,47 @@
     <style>
         :root {
             --tgdd-yellow: #ffbc05;
+            --tgdd-dark: #333;
             --cellphones-red: #d70018;
             --hoangha-blue: #00483d;
             --hhk-dark: #1a1a1a;
         }
-        body { background-color: #f3f4f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar { background-color: var(--cellphones-red) !important; padding: 10px 0; }
-        .navbar-brand { font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; }
-        .search-bar { border-radius: 10px; border: none; padding: 8px 15px; width: 400px; }
-        .nav-link { color: white !important; font-weight: 500; }
+        body { background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        /* Header Top */
+        .header-main { background-color: var(--tgdd-yellow); padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .navbar-brand { font-weight: 900; font-size: 1.6rem; color: #000 !important; text-transform: lowercase; }
+        .navbar-brand span { color: #000; }
+        
+        /* Search Bar */
+        .search-wrapper { position: relative; width: 100%; max-width: 500px; }
+        .search-bar { 
+            border-radius: 4px; 
+            border: none; 
+            padding: 10px 15px 10px 40px; 
+            width: 100%; 
+            font-size: 0.9rem;
+            background: white;
+        }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #666; z-index: 10; }
+        
+        /* Header Actions */
+        .header-action { color: #000 !important; font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; padding: 5px 10px; border-radius: 4px; transition: background 0.2s; }
+        .header-action:hover { background: rgba(255,255,255,0.2); }
+        .header-action i { font-size: 1.2rem; margin-right: 6px; }
+        .cart-badge { background: #000; color: #fff; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; position: absolute; top: -2px; right: 2px; }
+
+        /* Sub Navigation */
+        .header-nav { background-color: var(--tgdd-yellow); padding-bottom: 8px; }
+        .nav-categories { display: flex; justify-content: space-between; list-style: none; margin: 0; padding: 0; overflow-x: auto; white-space: nowrap; }
+        .nav-categories::-webkit-scrollbar { display: none; }
+        .nav-item-link { color: #000 !important; text-decoration: none; font-size: 0.8rem; font-weight: 500; display: flex; align-items: center; padding: 8px 12px; border-radius: 4px; }
+        .nav-item-link:hover { background: rgba(255,255,255,0.3); }
+        .nav-item-link i { font-size: 1rem; margin-right: 6px; }
+
         .product-card { 
             border: none; 
-            border-radius: 15px; 
+            border-radius: 8px; 
             transition: all 0.3s ease; 
             overflow: hidden;
             background: white;
@@ -31,50 +60,83 @@
         }
         .btn-buy { background-color: var(--cellphones-red); color: white; border-radius: 8px; font-weight: 600; }
         .btn-buy:hover { background-color: #b50014; color: white; }
-        .category-item { border-radius: 8px; margin-bottom: 5px; border: none; }
-        .category-item.active { background-color: var(--tgdd-yellow) !important; color: black !important; font-weight: bold; }
         footer { background-color: white; border-top: 5px solid var(--tgdd-yellow); }
-        .team-badge { font-size: 0.7rem; vertical-align: middle; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; margin-left: 5px; }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <!-- Main Header -->
+    <header class="header-main sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'shop:product_list' %}">
-                HHK<span style="color: var(--tgdd-yellow)">DIGITAL</span>
-                <span class="team-badge">Hưng • Hoàng • Khoa</span>
-            </a>
-            
-            <form class="d-none d-md-flex mx-auto">
-                <input class="form-control search-bar" type="search" placeholder="Hưng, Hoàng, Khoa tìm gì giúp bạn hôm nay..." aria-label="Search">
-            </form>
+            <div class="row align-items-center g-3">
+                <!-- Logo -->
+                <div class="col-auto">
+                    <a class="navbar-brand d-flex align-items-center" href="{% url 'shop:product_list' %}">
+                        hhkdigital<span style="font-weight: 300; font-size: 0.7rem; margin-left: 2px;">.com</span>
+                    </a>
+                </div>
 
-            <div class="d-flex align-items-center">
-                <a href="{% url 'shop:cart_detail' %}" class="nav-link position-relative me-3">
-                    <i class="bi bi-cart3 fs-4"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
-                        {{ request.session.cart|length|default:0 }}
-                    </span>
-                </a>
-                {% if user.is_authenticated %}
-                    <div class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle fs-4"></i> Xin chào, {{ user.username }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                            {% if user.is_staff %}
-                                <li><a class="dropdown-item fw-bold text-primary" href="/admin"><i class="bi bi-shield-lock me-2"></i>Quản trị</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                            {% endif %}
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Tài khoản</a></li>
-                            <li><a class="dropdown-item" href="{% url 'shop:logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Đăng xuất</a></li>
-                        </ul>
+                <!-- Search -->
+                <div class="col">
+                    <div class="search-wrapper mx-auto">
+                        <i class="bi bi-search search-icon"></i>
+                        <input class="form-control search-bar" type="search" placeholder="Bạn tìm gì giúp Hưng, Hoàng, Khoa hôm nay..." aria-label="Search">
                     </div>
-                {% else %}
-                    <a href="{% url 'shop:login' %}" class="btn btn-outline-light btn-sm fw-bold me-2">Đăng nhập</a>
-                    <a href="/admin" class="btn btn-light btn-sm fw-bold">Quản trị</a>
-                {% endif %}
+                </div>
+
+                <!-- Actions -->
+                <div class="col-auto d-flex align-items-center">
+                    <a href="#" class="header-action d-none d-lg-flex me-2">
+                        <i class="bi bi-geo-alt"></i>
+                        <span>Xem tồn kho tại<br><b>Hồ Chí Minh</b></span>
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <div class="dropdown me-2">
+                            <a href="#" class="header-action dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="bi bi-person"></i>
+                                <span>Chào,<br><b>{{ user.username }}</b></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                                {% if user.is_staff %}
+                                    <li><a class="dropdown-item fw-bold text-primary" href="/admin"><i class="bi bi-shield-lock me-2"></i>Quản trị</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Tài khoản</a></li>
+                                <li><a class="dropdown-item" href="{% url 'shop:logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'shop:login' %}" class="header-action me-2">
+                            <i class="bi bi-person"></i>
+                            <span>Đăng nhập</span>
+                        </a>
+                    {% endif %}
+
+                    <a href="{% url 'shop:cart_detail' %}" class="header-action position-relative">
+                        <i class="bi bi-cart3"></i>
+                        <span>Giỏ hàng</span>
+                        <span class="cart-badge">{{ request.session.cart|length|default:0 }}</span>
+                    </a>
+                </div>
             </div>
+        </div>
+    </header>
+
+    <!-- Sub Header / Navigation -->
+    <nav class="header-nav">
+        <div class="container">
+            <ul class="nav-categories">
+                <li><a href="{% url 'shop:product_list_by_category' 'dien-thoai-di-dong' %}" class="nav-item-link"><i class="bi bi-phone"></i>Điện thoại</a></li>
+                <li><a href="{% url 'shop:product_list_by_category' 'laptop' %}" class="nav-item-link"><i class="bi bi-laptop"></i>Laptop</a></li>
+                <li><a href="{% url 'shop:product_list_by_category' 'may-tinh-bang' %}" class="nav-item-link"><i class="bi bi-tablet"></i>Tablet</a></li>
+                <li><a href="{% url 'shop:product_list_by_category' 'phu-kien' %}" class="nav-item-link"><i class="bi bi-headset"></i>Phụ kiện</a></li>
+                <li><a href="#" class="nav-item-link"><i class="bi bi-watch"></i>Smartwatch</a></li>
+                <li><a href="#" class="nav-item-link"><i class="bi bi-clock"></i>Đồng hồ</a></li>
+                <li><a href="#" class="nav-item-link"><i class="bi bi-arrow-repeat"></i>Máy cũ, Thu cũ</a></li>
+                <li><a href="{% url 'shop:product_list_by_category' 'tv-smart' %}" class="nav-item-link"><i class="bi bi-tv"></i>TV</a></li>
+                <li><a href="#" class="nav-item-link"><i class="bi bi-sim"></i>Sim, Thẻ cào</a></li>
+                <li><a href="#" class="nav-item-link"><i class="bi bi-lightning-charge"></i>Dịch vụ tiện ích</a></li>
+            </ul>
         </div>
     </nav>
 
