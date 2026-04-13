@@ -53,13 +53,24 @@ class Order(models.Model):
         ('bank', 'Chuyển khoản ngân hàng'),
         ('vnpay', 'Thanh toán qua VNPay'),
     )
+    CITY_CHOICES = (
+        ('Hồ Chí Minh', 'TP. Hồ Chí Minh'),
+        ('Hà Nội', 'TP. Hà Nội'),
+        ('Đà Nẵng', 'TP. Đà Nẵng'),
+        ('Hải Phòng', 'TP. Hải Phòng'),
+        ('Cần Thơ', 'TP. Cần Thơ'),
+        ('Bình Dương', 'Bình Dương'),
+        ('Đồng Nai', 'Đồng Nai'),
+        ('Long An', 'Long An'),
+        ('Khác', 'Tỉnh thành khác'),
+    )
     first_name = models.CharField(max_length=100, verbose_name="Họ")
     last_name = models.CharField(max_length=100, verbose_name="Tên")
     email = models.EmailField()
     phone = models.CharField(max_length=20, verbose_name="Số điện thoại", default="")
     address = models.TextField(verbose_name="Địa chỉ")
     postal_code = models.CharField(max_length=20, verbose_name="Mã bưu điện", blank=True)
-    city = models.CharField(max_length=200, verbose_name="Thành phố")
+    city = models.CharField(max_length=200, choices=CITY_CHOICES, default='Hồ Chí Minh', verbose_name="Thành phố")
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='cod', verbose_name="Phương thức thanh toán")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
