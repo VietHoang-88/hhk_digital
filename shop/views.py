@@ -205,3 +205,50 @@ def cart_remove(request, product_id):
         del cart[product_id]
         request.session['cart'] = cart
     return redirect('shop:cart_detail')
+
+# --- Logic So sánh sản phẩm (Comparison System) ---
+def compare_add(request, product_id):
+    compare = request.session.get('compare', [])
+    product_id = int(product_id)
+    if product_id not in compare:
+        if len(compare) >= 3:
+            compare.pop(0) # Chỉ cho phép so sánh tối đa 3 sản phẩm
+        compare.append(product_id)
+        request.session['compare'] = compare
+    return redirect('shop:compare_list')
+
+def compare_list(request):
+    compare_ids = request.session.get('compare', [])
+    products = Product.objects.filter(id__in=compare_ids)
+    
+    # Sắp xếp lại theo thứ tự đã thêm
+    sorted_products = []
+    for pid in compare_ids:
+        for p in products:
+            if p.id == pid:
+                sorted_products.append(p)
+                break
+
+    # Lấy tất cả các key thông số kỹ thuật duy nhất từ các sản phẩm
+    all_spec_keys = []
+    for p in sorted_products:
+        for key in p.specifications.keys():
+            if key not in all_spec_keys:
+                all_spec_keys.append(key)
+
+    return render(request, 'shop/compare.html', {
+        'products': sorted_products,
+        'all_spec_keys': all_spec_keys
+    })
+
+def compare_remove(request, product_id):
+    compare = request.session.get('compare', [])
+    product_id = int(product_id)
+    if product_id in compare:
+        compare.remove(product_id)
+        request.session['compare'] = compare
+    return redirect('shop:compare_list')
+
+def compare_clear(request):
+    request.session['compare'] = []
+    return redirect('shop:product_list')

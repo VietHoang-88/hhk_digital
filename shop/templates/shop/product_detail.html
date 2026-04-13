@@ -74,7 +74,9 @@
                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                     <span class="ms-1 text-muted">(12 đánh giá)</span>
                 </div>
-                <div class="small text-primary"><i class="bi bi-plus-circle me-1"></i>So sánh</div>
+                <a href="{% url 'shop:compare_add' product.id %}" class="small text-primary text-decoration-none cursor-pointer">
+                    <i class="bi bi-plus-circle me-1"></i>So sánh
+                </a>
             </div>
 
             <div class="price-box mb-4">
@@ -87,11 +89,11 @@
 
             <!-- Color Options -->
             <div class="mb-4">
-                <p class="fw-bold small mb-2">Chọn màu sắc:</p>
+                <p class="fw-bold small mb-2">Chọn màu sắc: <span id="selectedColorName" class="text-danger">Bạc</span></p>
                 <div class="d-flex gap-2">
-                    <div class="color-option active">Bạc</div>
-                    <div class="color-option">Xám</div>
-                    <div class="color-option">Xanh</div>
+                    <div class="color-option active" onclick="selectColor(this, 'Bạc')">Bạc</div>
+                    <div class="color-option" onclick="selectColor(this, 'Xám')">Xám</div>
+                    <div class="color-option" onclick="selectColor(this, 'Xanh')">Xanh</div>
                 </div>
             </div>
 
@@ -178,6 +180,17 @@
 </div>
 
 <script>
+    function selectColor(element, colorName) {
+        // Remove active class from all color options
+        document.querySelectorAll('.color-option').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        // Add active class to the clicked element
+        element.classList.add('active');
+        // Update selected color name in UI
+        document.getElementById('selectedColorName').innerText = colorName;
+    }
+
     function addToCart(baseUrl, buyNow = false) {
         let url = baseUrl + '?quantity=1';
         if (buyNow) url += '&buy_now=1';
