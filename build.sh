@@ -4,9 +4,6 @@ set -o errexit
 
 pip install -r requirements.txt
 
-# Tạo thư mục media trên Disk nếu chưa có
-mkdir -p /data/media
-
 python manage.py collectstatic --no-input
 python manage.py migrate --noinput
 python manage.py seed_data
