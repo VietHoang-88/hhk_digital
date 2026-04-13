@@ -4,6 +4,10 @@ services:
     env: python
     buildCommand: "bash build.sh"
     startCommand: "gunicorn hhk_core.wsgi:application"
+    disk:
+      name: hhk-data
+      mountPath: /data
+      sizeGB: 1
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.8

@@ -28,7 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     'django.contrib.humanize',
     'shop',
 ]
@@ -70,6 +72,9 @@ WSGI_APPLICATION = 'hhk_core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Xác định nếu đang chạy trên Render
+IS_RENDER = 'RENDER' in os.environ
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -77,12 +82,17 @@ DATABASES = {
     }
 }
 
-# Sử dụng DATABASE_URL nếu có và không rỗng
-db_url = os.environ.get('DATABASE_URL')
-if db_url and db_url.strip():
-    import dj_database_url
-    DATABASES['default'] = dj_database_url.config(default=db_url, conn_max_age=600)
-
+# Nếu trên Render, dùng đường dẫn ổ đĩa gắn ngoài (Disk) để lưu vĩnh viễn
+if IS_RENDER:
+    # Ưu tiên DATABASE_URL (nếu dùng PostgreSQL)
+    db_url = os.environ.get('DATABASE_URL')
+    if db_url and db_url.strip():
+        import dj_database_url
+        DATABASES['default'] = dj_database_url.config(default=db_url, conn_max_age=600)
+    elif os.path.exists('/data'):
+        # Nếu vẫn dùng SQLite và có gắn Disk, lưu vào thư mục /data/
+        DATABASES['default']['NAME'] = '/data/db.sqlite3'
+    # Nếu không có DATABASE_URL và không có Disk, nó sẽ dùng mặc định (nhưng sẽ bị mất dữ liệu khi restart)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -126,8 +136,19 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+# Media settings (Cloudinary for Render, local for dev)
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
+if IS_RENDER:
+    # Cấu hình Cloudinary để lưu ảnh vĩnh viễn trên gói Free
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
