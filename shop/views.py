@@ -17,13 +17,16 @@ def order_create(request):
         if form.is_valid():
             order = form.save()
             for product_id, item in cart.items():
-                product = Product.objects.get(id=product_id)
-                OrderItem.objects.create(
-                    order=order,
-                    product=product,
-                    price=item['price'],
-                    quantity=item['quantity']
-                )
+                try:
+                    product = Product.objects.get(id=product_id)
+                    OrderItem.objects.create(
+                        order=order,
+                        product=product,
+                        price=item['price'],
+                        quantity=item['quantity']
+                    )
+                except Product.DoesNotExist:
+                    continue
             # Clear the cart
             request.session['cart'] = {}
             return render(request, 'shop/order_success.html', {'order': order})
@@ -33,16 +36,30 @@ def order_create(request):
     # Calculate cart total for display
     cart_items = []
     total_price = 0
+    to_remove = []
+    
     for product_id, item in cart.items():
-        product = get_object_or_404(Product, id=product_id)
-        item_total = int(item['price']) * item['quantity']
-        cart_items.append({
-            'product': product,
-            'quantity': item['quantity'],
-            'price': item['price'],
-            'total_price': item_total
-        })
-        total_price += item_total
+        try:
+            product = Product.objects.get(id=product_id)
+            item_total = int(item['price']) * item['quantity']
+            cart_items.append({
+                'product': product,
+                'quantity': item['quantity'],
+                'price': item['price'],
+                'total_price': item_total
+            })
+            total_price += item_total
+        except Product.DoesNotExist:
+            to_remove.append(product_id)
+
+    if to_remove:
+        for pid in to_remove:
+            if pid in cart:
+                del cart[pid]
+        request.session['cart'] = cart
+        request.session.modified = True
+        if not cart:
+            return redirect('shop:product_list')
         
     return render(request, 'shop/checkout.html', {
         'form': form,
@@ -130,7 +147,8 @@ def cart_add(request, product_id):
         quantity = 1
 
     if product_id not in cart:
-        cart[product_id] = {'quantity': 0, 'price': str(Product.objects.get(id=product_id).price)}
+        product = get_object_or_404(Product, id=product_id)
+        cart[product_id] = {'quantity': 0, 'price': str(product.price)}
     
     # Nếu là cập nhật số lượng trực tiếp (từ trang giỏ hàng)
     if request.GET.get('update'):
@@ -150,16 +168,30 @@ def cart_detail(request):
     cart = request.session.get('cart', {})
     cart_items = []
     total_price = 0
+    # Danh sách các ID cần xóa nếu không tìm thấy sản phẩm
+    to_remove = []
+    
     for product_id, item in cart.items():
-        product = get_object_or_404(Product, id=product_id)
-        item_total = int(item['price']) * item['quantity']
-        cart_items.append({
-            'product': product,
-            'quantity': item['quantity'],
-            'price': item['price'],
-            'total_price': item_total
-        })
-        total_price += item_total
+        try:
+            product = Product.objects.get(id=product_id)
+            item_total = int(item['price']) * item['quantity']
+            cart_items.append({
+                'product': product,
+                'quantity': item['quantity'],
+                'price': item['price'],
+                'total_price': item_total
+            })
+            total_price += item_total
+        except Product.DoesNotExist:
+            to_remove.append(product_id)
+            
+    # Xóa các sản phẩm không còn tồn tại khỏi session
+    if to_remove:
+        for pid in to_remove:
+            if pid in cart:
+                del cart[pid]
+        request.session['cart'] = cart
+        request.session.modified = True
     
     return render(request, 'shop/cart.html', {
         'cart_items': cart_items,
