@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
+    'django_json_widget',
     'django.contrib.humanize',
     'shop',
 ]

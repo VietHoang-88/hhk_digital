@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.db import models
+from django_json_widget.widgets import JSONEditorWidget
 from .models import Category, Product, Order, OrderItem
 
 @admin.register(Category)
@@ -13,6 +15,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ['price', 'stock', 'available']
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ['name', 'description']
+    formfield_overrides = {
+        models.JSONField: {'widget': JSONEditorWidget},
+    }
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
