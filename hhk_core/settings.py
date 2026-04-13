@@ -139,7 +139,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Media settings (Cloudinary for Render, local for dev)
 MEDIA_URL = 'media/'
 
-if IS_RENDER:
+if IS_RENDER and os.environ.get('CLOUDINARY_CLOUD_NAME'):
     # Cấu hình Cloudinary để lưu ảnh vĩnh viễn trên gói Free
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
@@ -148,6 +148,7 @@ if IS_RENDER:
     }
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 else:
+    # Nếu không có Cloudinary, dùng thư mục media cục bộ (sẽ mất ảnh khi restart)
     MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
