@@ -53,13 +53,13 @@ class Order(models.Model):
         ('bank', 'Chuyển khoản ngân hàng'),
         ('vnpay', 'Thanh toán qua VNPay'),
     )
-    first_name = models.CharField(max_length=50, verbose_name="Họ")
-    last_name = models.CharField(max_length=50, verbose_name="Tên")
+    first_name = models.CharField(max_length=100, verbose_name="Họ")
+    last_name = models.CharField(max_length=100, verbose_name="Tên")
     email = models.EmailField()
-    phone = models.CharField(max_length=15, verbose_name="Số điện thoại", default="")
-    address = models.CharField(max_length=250, verbose_name="Địa chỉ")
+    phone = models.CharField(max_length=20, verbose_name="Số điện thoại", default="")
+    address = models.TextField(verbose_name="Địa chỉ")
     postal_code = models.CharField(max_length=20, verbose_name="Mã bưu điện", blank=True)
-    city = models.CharField(max_length=100, verbose_name="Thành phố")
+    city = models.CharField(max_length=200, verbose_name="Thành phố")
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='cod', verbose_name="Phương thức thanh toán")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
