@@ -51,7 +51,7 @@
                                                    class="btn btn-outline-secondary {% if item.quantity <= 1 %}disabled{% endif %}">
                                                     <i class="bi bi-dash"></i>
                                                 </a>
-                                                <input type="text" class="form-control text-center fw-bold" value="{{ item.quantity }}" readonly>
+                                                <input type="number" min="1" max="{{ item.product.stock }}" class="form-control text-center fw-bold" value="{{ item.quantity }}" onchange="updateCartQuantity(this, {{ item.product.id }})">
                                                 <a href="{% url 'shop:cart_add' item.product.id %}?quantity={{ item.quantity|add:'1' }}&update=1" 
                                                    class="btn btn-outline-secondary">
                                                     <i class="bi bi-plus"></i>
@@ -96,4 +96,20 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+    function updateCartQuantity(input, productId) {
+        let quantity = parseInt(input.value, 10);
+        if (isNaN(quantity) || quantity < 1) {
+            quantity = 1;
+            input.value = quantity;
+        }
+        const max = parseInt(input.max, 10);
+        if (!isNaN(max) && quantity > max) {
+            quantity = max;
+            input.value = quantity;
+        }
+        window.location.href = `{% url 'shop:cart_add' 0 %}`.replace('/0/', `/${productId}/`) + `?quantity=${quantity}&update=1`;
+    }
+</script>
 {% endblock %}

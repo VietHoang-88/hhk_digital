@@ -182,7 +182,7 @@
                 <div class="d-flex align-items-center justify-content-end gap-3">
                     <div class="input-group input-group-sm" style="width: 130px;">
                         <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1)">-</button>
-                        <input id="buyNowQuantity" type="text" class="form-control text-center" value="1" readonly>
+                        <input id="buyNowQuantity" type="number" min="1" max="{{ product.stock }}" class="form-control text-center" value="1" onchange="normalizeBuyNowQuantity()">
                         <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1)">+</button>
                     </div>
                     <div class="d-inline-flex gap-2">
@@ -211,6 +211,23 @@
         const qtyField = document.getElementById('buyNowQuantity');
         let qty = parseInt(qtyField.value || '1', 10);
         qty = Math.max(1, qty + delta);
+        const max = parseInt(qtyField.max || '0', 10);
+        if (!isNaN(max) && max > 0) {
+            qty = Math.min(qty, max);
+        }
+        qtyField.value = qty;
+    }
+
+    function normalizeBuyNowQuantity() {
+        const qtyField = document.getElementById('buyNowQuantity');
+        let qty = parseInt(qtyField.value, 10);
+        if (isNaN(qty) || qty < 1) {
+            qty = 1;
+        }
+        const max = parseInt(qtyField.max || '0', 10);
+        if (!isNaN(max) && max > 0 && qty > max) {
+            qty = max;
+        }
         qtyField.value = qty;
     }
 
