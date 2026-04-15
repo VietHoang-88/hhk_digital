@@ -179,9 +179,16 @@
                 </div>
             </div>
             <div class="col text-end">
-                <div class="d-inline-flex gap-2">
-                    <button onclick="addToCart('{% url 'shop:cart_add' product.id %}')" class="btn btn-outline-danger px-4 fw-bold">Thêm giỏ hàng</button>
-                    <button onclick="addToCart('{% url 'shop:cart_add' product.id %}', true)" class="btn btn-danger px-5 fw-bold">MUA NGAY</button>
+                <div class="d-flex align-items-center justify-content-end gap-3">
+                    <div class="input-group input-group-sm" style="width: 130px;">
+                        <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1)">-</button>
+                        <input id="buyNowQuantity" type="text" class="form-control text-center" value="1" readonly>
+                        <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1)">+</button>
+                    </div>
+                    <div class="d-inline-flex gap-2">
+                        <button onclick="addToCart('{% url 'shop:cart_add' product.id %}')" class="btn btn-outline-danger px-4 fw-bold">Thêm giỏ hàng</button>
+                        <button onclick="addToCart('{% url 'shop:cart_add' product.id %}', true)" class="btn btn-danger px-5 fw-bold">MUA NGAY</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -200,8 +207,17 @@
         document.getElementById('selectedColorName').innerText = colorName;
     }
 
+    function changeQuantity(delta) {
+        const qtyField = document.getElementById('buyNowQuantity');
+        let qty = parseInt(qtyField.value || '1', 10);
+        qty = Math.max(1, qty + delta);
+        qtyField.value = qty;
+    }
+
     function addToCart(baseUrl, buyNow = false) {
-        let url = baseUrl + '?quantity=1';
+        const qtyField = document.getElementById('buyNowQuantity');
+        const quantity = parseInt(qtyField.value || '1', 10);
+        let url = baseUrl + '?quantity=' + quantity;
         if (buyNow) url += '&buy_now=1';
         window.location.href = url;
     }
