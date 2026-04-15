@@ -9,6 +9,15 @@
     <form method="post" class="row g-0">
         {% csrf_token %}
         <div class="col-md-8">
+            {% if stock_errors %}
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        {% for error in stock_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
             <div class="card product-card p-4 shadow-sm border-0">
                 <h2 class="fw-bold mb-4">Thông tin thanh toán</h2>
                 <div class="row g-3">

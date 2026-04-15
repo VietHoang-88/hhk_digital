@@ -58,6 +58,28 @@ def order_create(request):
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
         if form.is_valid():
+            # Validate stock before saving order
+            stock_errors = []
+            for product_id, item in cart.items():
+                try:
+                    product = Product.objects.get(id=product_id)
+                    if item['quantity'] > product.stock:
+                        stock_errors.append(
+                            f"Sản phẩm {product.name} chỉ còn {product.stock} trong kho, bạn đã chọn {item['quantity']}"
+                        )
+                except Product.DoesNotExist:
+                    continue
+
+            if stock_errors:
+                return render(request, 'shop/checkout.html', {
+                    'form': form,
+                    'cart_items': cart_items,
+                    'total_price': total_price,
+                    'voucher_discount': voucher_discount,
+                    'total_after_discount': max(total_price - voucher_discount, 0),
+                    'stock_errors': stock_errors,
+                })
+
             order = form.save(commit=False)
             order.discount_amount = get_voucher_discount(form.cleaned_data.get('voucher_code'), total_price)
             order.save()
@@ -70,6 +92,10 @@ def order_create(request):
                         price=item['price'],
                         quantity=item['quantity']
                     )
+                    product.stock = max(product.stock - item['quantity'], 0)
+                    if product.stock == 0:
+                        product.available = False
+                    product.save(update_fields=['stock', 'available'])
                 except Product.DoesNotExist:
                     continue
             # Clear the cart
@@ -172,17 +198,24 @@ def cart_add(request, product_id):
     except (ValueError, TypeError):
         quantity = 1
 
+    product = get_object_or_404(Product, id=product_id)
+    if product.stock <= 0:
+        return redirect('shop:cart_detail')
+
     if product_id not in cart:
-        product = get_object_or_404(Product, id=product_id)
         cart[product_id] = {'quantity': 0, 'price': str(product.price)}
-    
-    # Nếu là cập nhật số lượng trực tiếp (từ trang giỏ hàng)
+
     if request.GET.get('update'):
-        cart[product_id]['quantity'] = quantity
+        cart[product_id]['quantity'] = min(quantity, product.stock)
     else:
         # Nếu là thêm vào giỏ (từ trang chi tiết)
-        cart[product_id]['quantity'] += quantity
-        
+        new_quantity = cart[product_id]['quantity'] + quantity
+        cart[product_id]['quantity'] = min(new_quantity, product.stock)
+
+    # If quantity becomes 0 due to product stock or remove behavior, drop it
+    if cart[product_id]['quantity'] <= 0:
+        cart.pop(product_id, None)
+
     request.session['cart'] = cart
     
     # Nếu là mua ngay thì chuyển hướng đến checkout, ngược lại về giỏ hàng

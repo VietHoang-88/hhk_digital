@@ -83,8 +83,10 @@
             {% for product in products %}
                 <div class="col">
                     <div class="card h-100 product-card p-2 position-relative shadow-sm border-0">
-                        {% if product.stock < 5 %}
-                            <span class="position-absolute top-0 start-0 m-3 badge bg-danger" style="z-index: 1;">Chỉ còn {{ product.stock }}</span>
+                        {% if product.stock > 0 %}
+                            <span class="position-absolute top-0 start-0 m-3 badge bg-success" style="z-index: 1;">Còn {{ product.stock }}</span>
+                        {% else %}
+                            <span class="position-absolute top-0 start-0 m-3 badge bg-secondary" style="z-index: 1;">Hết hàng</span>
                         {% endif %}
                         
                         <a href="{% url 'shop:product_detail' product.id product.slug %}" class="text-center">
@@ -115,19 +117,23 @@
                             </div>
                         </div>
                         <div class="card-footer bg-transparent border-0 pt-0">
-                            <div class="d-grid gap-2">
-                                <a href="{% url 'shop:cart_add' product.id %}" class="btn btn-outline-primary py-2 small">
-                                    <i class="bi bi-cart-plus me-1"></i>Thêm giỏ hàng
-                                </a>
-                                <div class="input-group input-group-sm">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQtyList(this, -1)">−</button>
-                                    <input type="text" class="form-control qty-input text-center fw-bold" value="1" readonly>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQtyList(this, 1)">+</button>
-                                    <button type="button" class="btn btn-danger" data-product-id="{{ product.id }}" onclick="buyNowList(this)">
-                                        <i class="bi bi-lightning-fill me-1"></i>MUA NGAY
-                                    </button>
+                            {% if product.stock > 0 %}
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'shop:cart_add' product.id %}" class="btn btn-outline-primary py-2 small">
+                                        <i class="bi bi-cart-plus me-1"></i>Thêm giỏ hàng
+                                    </a>
+                                    <div class="input-group input-group-sm">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="changeQtyList(this, -1)">−</button>
+                                        <input type="text" class="form-control qty-input text-center fw-bold" value="1" readonly>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="changeQtyList(this, 1)">+</button>
+                                        <button type="button" class="btn btn-danger" data-product-id="{{ product.id }}" onclick="buyNowList(this)">
+                                            <i class="bi bi-lightning-fill me-1"></i>MUA NGAY
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            {% else %}
+                                <button type="button" class="btn btn-secondary py-2 small" disabled>Hết hàng</button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
