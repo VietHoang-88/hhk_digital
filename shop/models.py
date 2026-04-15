@@ -23,6 +23,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, verbose_name="Tên sản phẩm")
     slug = models.SlugField(max_length=200, unique=True)
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, verbose_name="Hình ảnh")
+    video = models.FileField(upload_to='products/videos/%Y/%m/%d', blank=True, null=True, verbose_name="Video sản phẩm")
     description = models.TextField(blank=True, verbose_name="Mô tả")
     price = models.DecimalField(max_digits=10, decimal_places=0, verbose_name="Giá (VNĐ)")
     stock = models.PositiveIntegerField(verbose_name="Số lượng tồn kho")

@@ -56,6 +56,15 @@
                 {% else %}
                     <div class="bg-light py-5 rounded-4"><i class="bi bi-image fs-1 text-muted"></i></div>
                 {% endif %}
+
+                {% if product.video %}
+                    <div class="mt-4">
+                        <video controls preload="metadata" class="w-100 rounded-4" style="max-height: 360px; object-fit: cover;">
+                            <source src="{{ product.video.url }}" type="video/mp4">
+                            Trình duyệt của bạn không hỗ trợ video.
+                        </video>
+                    </div>
+                {% endif %}
                 
                 <div class="d-flex justify-content-center gap-2 mt-4">
                     <div class="border rounded p-1" style="width: 70px; cursor: pointer;"><img src="{{ product.image.url }}" class="img-fluid"></div>
