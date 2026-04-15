@@ -1,4 +1,5 @@
 {% extends 'shop/base.html' %}
+{% load static %}
 {% load humanize %}
 
 {% block title %}Thanh toán - Hoàng Digital{% endblock %}
@@ -51,6 +52,14 @@
                     {% endfor %}
                 </div>
 
+                <div id="payment-qr-container" class="alert alert-light border-secondary mt-4 d-none">
+                    <h5 id="payment-qr-title" class="fw-semibold mb-3"></h5>
+                    <div class="text-center mb-3">
+                        <img id="payment-qr-image" src="" alt="QR code thanh toán" class="img-fluid" style="max-width:250px;" />
+                    </div>
+                    <div id="payment-qr-text" class="small text-muted"></div>
+                </div>
+
                 <div class="d-grid mt-4">
                     <button type="submit" class="btn btn-buy btn-lg py-3 fw-bold">XÁC NHẬN ĐẶT HÀNG</button>
                 </div>
@@ -95,6 +104,78 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const qrContainer = document.getElementById('payment-qr-container');
+        const qrTitle = document.getElementById('payment-qr-title');
+        const qrImage = document.getElementById('payment-qr-image');
+        const qrText = document.getElementById('payment-qr-text');
+        const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+        const requiredFields = [
+            document.getElementById('{{ form.first_name.id_for_label }}'),
+            document.getElementById('{{ form.last_name.id_for_label }}'),
+            document.getElementById('{{ form.email.id_for_label }}'),
+            document.getElementById('{{ form.phone.id_for_label }}'),
+            document.getElementById('{{ form.address.id_for_label }}')
+        ];
+
+        function getSelectedPayment() {
+            const selected = Array.from(paymentRadios).find((radio) => radio.checked);
+            return selected ? selected.value : null;
+        }
+
+        function isFilled(field) {
+            return field && field.value.trim() !== '';
+        }
+
+        function allRequiredFieldsFilled() {
+            return requiredFields.every(isFilled);
+        }
+
+        function updateQrDisplay() {
+            const paymentMethod = getSelectedPayment();
+
+            if (!paymentMethod || paymentMethod === 'cod') {
+                qrContainer.classList.add('d-none');
+                return;
+            }
+
+            qrContainer.classList.remove('d-none');
+
+            if (!allRequiredFieldsFilled()) {
+                qrTitle.textContent = 'Điền đầy đủ thông tin để xem QR thanh toán';
+                qrImage.src = '';
+                qrImage.alt = 'QR code thanh toán sẽ xuất hiện khi hoàn tất thông tin';
+                qrText.textContent = 'Chọn hình thức chuyển khoản ngân hàng hoặc VNPay và điền đầy đủ họ, tên, email, số điện thoại và địa chỉ để mã QR hiển thị ngay bên dưới.';
+                return;
+            }
+
+            if (paymentMethod === 'bank') {
+                qrTitle.textContent = 'QR chuyển khoản ngân hàng';
+                qrImage.src = '{% static "qr/bank_qr.png" %}';
+                qrImage.alt = 'QR chuyển khoản ngân hàng';
+                qrText.innerHTML = 'Quét mã QR bằng ứng dụng ngân hàng để thanh toán. <br>STK: <strong>1234567890</strong> - Ngân hàng ACB<br>Chủ tài khoản: <strong>HHK Digital</strong>';
+            } else if (paymentMethod === 'vnpay') {
+                qrTitle.textContent = 'QR thanh toán VNPay';
+                qrImage.src = '{% static "qr/vnpay_qr.png" %}';
+                qrImage.alt = 'QR thanh toán VNPay';
+                qrText.innerHTML = 'Quét mã QR bằng ứng dụng VNPay để thanh toán nhanh. <br>Số điện thoại: <strong>0987654321</strong> - Nội dung: <strong>HHK Digital</strong>';
+            } else {
+                qrContainer.classList.add('d-none');
+            }
+        }
+
+        paymentRadios.forEach((radio) => radio.addEventListener('change', updateQrDisplay));
+        requiredFields.forEach((field) => {
+            if (field) {
+                field.addEventListener('input', updateQrDisplay);
+            }
+        });
+
+        updateQrDisplay();
+    });
+</script>
 
 <style>
     input[type="text"], input[type="email"], input[type="tel"] {
