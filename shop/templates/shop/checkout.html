@@ -5,11 +5,11 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-8">
-        <div class="card product-card p-4 shadow-sm border-0">
-            <h2 class="fw-bold mb-4">Thông tin thanh toán</h2>
-            <form method="post">
-                {% csrf_token %}
+    <form method="post" class="row g-0">
+        {% csrf_token %}
+        <div class="col-md-8">
+            <div class="card product-card p-4 shadow-sm border-0">
+                <h2 class="fw-bold mb-4">Thông tin thanh toán</h2>
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="{{ form.first_name.id_for_label }}" class="form-label fw-semibold">Họ</label>
@@ -54,28 +54,46 @@
                 <div class="d-grid mt-4">
                     <button type="submit" class="btn btn-buy btn-lg py-3 fw-bold">XÁC NHẬN ĐẶT HÀNG</button>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
 
-    <div class="col-md-4">
-        <div class="card product-card p-4 shadow-sm border-0">
-            <h4 class="fw-bold mb-3">Đơn hàng của bạn</h4>
-            <div class="order-summary">
-                {% for item in cart_items %}
-                <div class="d-flex justify-content-between mb-2">
-                    <span>{{ item.product.name }} x {{ item.quantity }}</span>
-                    <span>{{ item.total_price|intcomma }}₫</span>
-                </div>
-                {% endfor %}
-                <hr>
-                <div class="d-flex justify-content-between fw-bold fs-5 text-danger">
-                    <span>Tổng cộng:</span>
-                    <span>{{ total_price|intcomma }}₫</span>
+        <div class="col-md-4">
+            <div class="card product-card p-4 shadow-sm border-0">
+                <h4 class="fw-bold mb-3">Đơn hàng của bạn</h4>
+                <div class="order-summary">
+                    {% for item in cart_items %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>{{ item.product.name }} x {{ item.quantity }}</span>
+                        <span>{{ item.total_price|intcomma }}₫</span>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="mb-3">
+                        <label for="{{ form.voucher_code.id_for_label }}" class="form-label fw-semibold">Mã voucher</label>
+                        {% if form.voucher_code.errors %}
+                        <div class="text-danger small mb-1">{{ form.voucher_code.errors.as_text|slice:2:-1 }}</div>
+                        {% endif %}
+                        {{ form.voucher_code }}
+                    </div>
+                    {% if voucher_discount %}
+                    <div class="d-flex justify-content-between mb-2 text-success">
+                        <span>Giảm giá voucher</span>
+                        <span>-{{ voucher_discount|intcomma }}₫</span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold fs-5 text-danger">
+                        <span>Tổng sau giảm:</span>
+                        <span>{{ total_after_discount|intcomma }}₫</span>
+                    </div>
+                    {% else %}
+                    <div class="d-flex justify-content-between fw-bold fs-5 text-danger">
+                        <span>Tổng cộng:</span>
+                        <span>{{ total_price|intcomma }}₫</span>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <style>

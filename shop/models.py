@@ -73,6 +73,8 @@ class Order(models.Model):
     postal_code = models.CharField(max_length=20, verbose_name="Mã bưu điện", blank=True)
     city = models.CharField(max_length=200, choices=CITY_CHOICES, default='Hồ Chí Minh', verbose_name="Thành phố")
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='cod', verbose_name="Phương thức thanh toán")
+    voucher_code = models.CharField(max_length=50, blank=True, verbose_name='Mã voucher')
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=0, default=0, verbose_name='Giảm giá (VNĐ)')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
@@ -86,7 +88,7 @@ class Order(models.Model):
         return f'Order {self.id}'
 
     def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all())
+        return max(sum(item.get_cost() for item in self.items.all()) - self.discount_amount, 0)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)

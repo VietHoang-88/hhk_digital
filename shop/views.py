@@ -6,33 +6,25 @@ from django.contrib.auth.decorators import login_required
 from .models import Category, Product, Order, OrderItem
 from .forms import OrderCreateForm
 
+
+def get_voucher_discount(code, subtotal):
+    if not code:
+        return 0
+    code = code.strip().upper()
+    if code == 'HHK10':
+        return min(int(subtotal * 0.1), 500000)
+    if code == 'SALE100':
+        return 100000
+    if code == 'SALE200':
+        return 200000
+    return 0
+
 @login_required
 def order_create(request):
     cart = request.session.get('cart', {})
     if not cart:
         return redirect('shop:product_list')
         
-    if request.method == 'POST':
-        form = OrderCreateForm(request.POST)
-        if form.is_valid():
-            order = form.save()
-            for product_id, item in cart.items():
-                try:
-                    product = Product.objects.get(id=product_id)
-                    OrderItem.objects.create(
-                        order=order,
-                        product=product,
-                        price=item['price'],
-                        quantity=item['quantity']
-                    )
-                except Product.DoesNotExist:
-                    continue
-            # Clear the cart
-            request.session['cart'] = {}
-            return render(request, 'shop/order_success.html', {'order': order})
-    else:
-        form = OrderCreateForm()
-    
     # Calculate cart total for display
     cart_items = []
     total_price = 0
@@ -60,11 +52,40 @@ def order_create(request):
         request.session.modified = True
         if not cart:
             return redirect('shop:product_list')
-        
+
+    voucher_discount = 0
+    if request.method == 'POST':
+        form = OrderCreateForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.discount_amount = get_voucher_discount(form.cleaned_data.get('voucher_code'), total_price)
+            order.save()
+            for product_id, item in cart.items():
+                try:
+                    product = Product.objects.get(id=product_id)
+                    OrderItem.objects.create(
+                        order=order,
+                        product=product,
+                        price=item['price'],
+                        quantity=item['quantity']
+                    )
+                except Product.DoesNotExist:
+                    continue
+            # Clear the cart
+            request.session['cart'] = {}
+            return render(request, 'shop/order_success.html', {'order': order})
+        else:
+            voucher_discount = get_voucher_discount(request.POST.get('voucher_code', ''), total_price)
+    else:
+        form = OrderCreateForm()
+
+    total_after_discount = max(total_price - voucher_discount, 0)
     return render(request, 'shop/checkout.html', {
         'form': form,
         'cart_items': cart_items,
-        'total_price': total_price
+        'total_price': total_price,
+        'voucher_discount': voucher_discount,
+        'total_after_discount': total_after_discount,
     })
 
 def register(request):
