@@ -119,9 +119,14 @@
                                 <a href="{% url 'shop:cart_add' product.id %}" class="btn btn-outline-primary py-2 small">
                                     <i class="bi bi-cart-plus me-1"></i>Thêm giỏ hàng
                                 </a>
-                                <a href="{% url 'shop:cart_add' product.id %}?buy_now=1" class="btn btn-danger py-2 small fw-bold">
-                                    <i class="bi bi-lightning-fill me-1"></i>MUA NGAY
-                                </a>
+                                <div class="input-group input-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQtyList(this, -1)">−</button>
+                                    <input type="text" class="form-control qty-input text-center fw-bold" value="1" readonly>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQtyList(this, 1)">+</button>
+                                    <button type="button" class="btn btn-danger" data-product-id="{{ product.id }}" onclick="buyNowList(this)">
+                                        <i class="bi bi-lightning-fill me-1"></i>MUA NGAY
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -165,4 +170,23 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+    function changeQtyList(button, delta) {
+        const inputGroup = button.closest('.input-group');
+        const qtyInput = inputGroup.querySelector('.qty-input');
+        let qty = parseInt(qtyInput.value || '1', 10);
+        qty = Math.max(1, qty + delta);
+        qtyInput.value = qty;
+    }
+
+    function buyNowList(button) {
+        const inputGroup = button.closest('.input-group');
+        const qtyInput = inputGroup.querySelector('.qty-input');
+        const quantity = parseInt(qtyInput.value || '1', 10);
+        const productId = button.getAttribute('data-product-id');
+        const cartAddUrl = `{% url 'shop:cart_add' 'DUMMY' %}`.replace('DUMMY', productId);
+        window.location.href = cartAddUrl + '?quantity=' + quantity + '&buy_now=1';
+    }
+</script>
 {% endblock %}
