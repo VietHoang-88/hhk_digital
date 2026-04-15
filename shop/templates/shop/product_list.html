@@ -185,7 +185,7 @@
         const qtyInput = inputGroup.querySelector('.qty-input');
         const quantity = parseInt(qtyInput.value || '1', 10);
         const productId = button.getAttribute('data-product-id');
-        const cartAddUrl = `{% url 'shop:cart_add' 'DUMMY' %}`.replace('DUMMY', productId);
+        const cartAddUrl = `/cart/add/${productId}/`;
         window.location.href = cartAddUrl + '?quantity=' + quantity + '&buy_now=1';
     }
 </script>
