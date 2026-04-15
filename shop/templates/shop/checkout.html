@@ -71,7 +71,7 @@
                     <div class="mb-3">
                         <label for="{{ form.voucher_code.id_for_label }}" class="form-label fw-semibold">Mã voucher</label>
                         {% if form.voucher_code.errors %}
-                        <div class="text-danger small mb-1">{{ form.voucher_code.errors.as_text|slice:2:-1 }}</div>
+                        <div class="text-danger small mb-1">{{ form.voucher_code.errors.as_text|slice:"2:-1" }}</div>
                         {% endif %}
                         {{ form.voucher_code }}
                     </div>
