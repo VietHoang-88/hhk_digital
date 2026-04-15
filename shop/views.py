@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from .models import Category, Product, Order, OrderItem
 from .forms import OrderCreateForm
 
@@ -116,7 +117,11 @@ class ProductListView(ListView):
         # Tìm kiếm
         search = self.request.GET.get('search')
         if search:
-            queryset = queryset.filter(name__icontains=search)
+            queryset = queryset.filter(
+                Q(name__icontains=search) |
+                Q(description__icontains=search) |
+                Q(category__name__icontains=search)
+            )
             
         # Lọc theo giá
         price_filter = self.request.GET.get('price')
