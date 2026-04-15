@@ -26,7 +26,7 @@ class Product(models.Model):
     video = models.FileField(upload_to='products/videos/%Y/%m/%d', blank=True, null=True, verbose_name="Video sản phẩm")
     description = models.TextField(blank=True, verbose_name="Mô tả")
     price = models.DecimalField(max_digits=10, decimal_places=0, verbose_name="Giá (VNĐ)")
-    stock = models.PositiveIntegerField(verbose_name="Số lượng tồn kho")
+    stock = models.PositiveIntegerField(default=100, verbose_name="Số lượng tồn kho")
     specifications = models.JSONField(default=dict, blank=True, verbose_name="Thông số kỹ thuật")
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -73,8 +73,8 @@ class Order(models.Model):
     postal_code = models.CharField(max_length=20, verbose_name="Mã bưu điện", blank=True)
     city = models.CharField(max_length=200, choices=CITY_CHOICES, default='Hồ Chí Minh', verbose_name="Thành phố")
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='cod', verbose_name="Phương thức thanh toán")
-    voucher_code = models.CharField(max_length=50, blank=True, verbose_name='Mã voucher')
-    discount_amount = models.DecimalField(max_digits=10, decimal_places=0, default=0, verbose_name='Giảm giá (VNĐ)')
+    voucher_code = models.CharField(max_length=50, blank=True, verbose_name="Mã voucher")
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=0, default=0, verbose_name="Giảm giá (VNĐ)")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
@@ -88,7 +88,7 @@ class Order(models.Model):
         return f'Order {self.id}'
 
     def get_total_cost(self):
-        return max(sum(item.get_cost() for item in self.items.all()) - self.discount_amount, 0)
+        return sum(item.get_cost() for item in self.items.all())
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
