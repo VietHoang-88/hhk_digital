@@ -75,12 +75,8 @@ WSGI_APPLICATION = 'hhk_core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hhk_digital',
-        'USER': 'postgres',
-        'PASSWORD': 'matkhau_moi',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
